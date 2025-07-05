@@ -14,14 +14,26 @@ import emailRoutes from "./routes/emailRoutes.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
 
 dotenv.config();
+
 const app = express();
+app.get("/", (req, res) => {
+  res.send("✅ AuthMark backend is live and running!");
+});
 
 // 🟢 Setup __dirname for ES Modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // ✅ Middlewares
-app.use(cors());
+const corsOptions = {
+  origin: "https://authmark.netlify.app", // ✅ Only allow Netlify frontend
+  credentials: true, // ✅ If you're sending cookies or auth headers
+  methods: ["GET", "POST", "PUT", "DELETE"], // optional, but good for clarity
+  allowedHeaders: ["Content-Type", "Authorization"], // optional but helpful for preflight checks
+};
+
+app.use(cors(corsOptions));
+
 app.use(express.json());
 
 // ✅ API Routes
